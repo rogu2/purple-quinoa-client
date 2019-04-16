@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import './App.scss'
 import { Route } from 'react-router-dom'
 
@@ -8,6 +8,10 @@ import SignUp from './auth/components/SignUp'
 import SignIn from './auth/components/SignIn'
 import SignOut from './auth/components/SignOut'
 import ChangePassword from './auth/components/ChangePassword'
+import Recipe from './recipes/components/Recipe'
+import Recipes from './recipes/components/Recipes'
+import RecipeEdit from './recipes/components/RecipeEdit'
+import RecipeCreate from './recipes/components/RecipeCreate'
 
 import Alert from 'react-bootstrap/Alert'
 
@@ -33,7 +37,7 @@ class App extends Component {
     const { alerts, user } = this.state
 
     return (
-      <React.Fragment>
+      <Fragment>
         <Header user={user} />
         {alerts.map((alert, index) => (
           <Alert key={index} dismissible variant={alert.type}>
@@ -55,10 +59,29 @@ class App extends Component {
           <AuthenticatedRoute user={user} path='/change-password' render={() => (
             <ChangePassword alert={this.alert} user={user} />
           )} />
+
+          <AuthenticatedRoute user={user} exact path='/recipes' render={() => (
+            <Recipes alert={this.alert} user={user} />
+          )} />
+          <AuthenticatedRoute user={user} exact path='/recipes-create' render={() => (
+            <RecipeCreate alert={this.alert} user={user} />
+          )} />
+          <AuthenticatedRoute user={user} exact path='/recipes/:id' render={({ match }) => (
+            <Recipe alert={this.alert} match={match} user={user} />
+          )} />
+          <AuthenticatedRoute user={user} exact path='/recipes/:id/edit' render={({ match }) => (
+            <RecipeEdit alert={this.alert} match={match} user={user} />
+          )} />
+
         </main>
-      </React.Fragment>
+      </Fragment>
     )
   }
 }
 
 export default App
+
+// <Route exact path="/recipes" component={Recipes} />
+// <Route exact path="/recipes/:id" component={Recipe} />
+// <Route exact path="/recipes/:id/edit" component={RecipeEdit} />
+// <Route exact path="/recipe-create" component={RecipeCreate} />
