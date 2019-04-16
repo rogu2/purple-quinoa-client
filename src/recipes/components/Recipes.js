@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 // import axios from 'axios'
 // import apiUrl from '../../apiConfig'
-// import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { getRecipes } from '../RecipeAjax'
 import Spinner from 'react-bootstrap/Spinner'
 
@@ -36,7 +36,12 @@ class Recipes extends Component {
     console.log('recipes component render')
     return (
       <Fragment>
-        <h1> Placeholder </h1>
+        <h4> Recipes: </h4>
+        <ul>{recipes.map(recipe => (
+          <li key={recipe.title}>
+            <Link to={'/recipes/' + recipe.id}>{recipe.title}</Link>
+          </li>))}
+        </ul>
       </Fragment>
     )
   }
@@ -48,8 +53,6 @@ export default Recipes
 // <h5>{this.props.location.state ? this.props.location.state.message : ''}</h5>
 // <ul>
 //   {this.state.recipe.map(recipe => (
-//     <li key={recipe.title}>
-//       <Link to={'/recipes/' + recipe.id}>{recipe.title}</Link>
-//     </li>
+
 //   ))}
 // </ul>
