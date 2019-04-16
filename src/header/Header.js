@@ -1,10 +1,12 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
 import './Header.scss'
 
 const authenticatedOptions = (
   <React.Fragment>
+    <NavLink to="/recipes" exact activeClassName="active-route">My Recipes</NavLink>
+    <NavLink to="/recipe-create" exact activeClassName="active-route">Add a recipe!</NavLink>
     <Link to="/change-password">Change Password</Link>
     <Link to="/sign-out">Sign Out</Link>
   </React.Fragment>
