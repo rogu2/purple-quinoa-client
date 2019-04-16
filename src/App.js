@@ -30,7 +30,14 @@ class App extends Component {
   clearUser = () => this.setState({ user: null })
 
   alert = (message, type) => {
-    this.setState({ alerts: [...this.state.alerts, { message, type }] })
+    const { alerts } = this.state
+
+    this.setState({ alerts: [...alerts, { message, type }] })
+
+    // clears all alerts after 2 seconds
+    setTimeout(() => {
+      this.setState({ alerts: [] })
+    }, 2000)
   }
 
   render () {
@@ -80,8 +87,3 @@ class App extends Component {
 }
 
 export default App
-
-// <Route exact path="/recipes" component={Recipes} />
-// <Route exact path="/recipes/:id" component={Recipe} />
-// <Route exact path="/recipes/:id/edit" component={RecipeEdit} />
-// <Route exact path="/recipe-create" component={RecipeCreate} />
