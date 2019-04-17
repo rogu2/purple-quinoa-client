@@ -34,7 +34,8 @@ export const createRecipe = ({ props, recipeData }) => {
     data: {
       recipe: {
         title: recipeData.title,
-        ingredient: recipeData.ingredient
+        ingredient: recipeData.ingredient,
+        notes: recipeData.notes
       }
     }
   })
@@ -48,7 +49,8 @@ export const editRecipe = ({ props, recipeData }) => {
     data: {
       recipe: {
         title: recipeData.title,
-        ingredient: recipeData.ingredient
+        ingredient: recipeData.ingredient,
+        notes: recipeData.notes
       }
     }
   })

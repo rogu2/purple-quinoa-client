@@ -21,7 +21,6 @@ class Recipes extends Component {
 
   componentDidMount () {
     console.log('recipes component mounted')
-    // let recipeData
     getRecipes(this.props.user)
       .then(response => { this.setState({ recipes: response.data.recipe }) })
       .catch(console.error)

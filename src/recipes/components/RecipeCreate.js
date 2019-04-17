@@ -5,16 +5,19 @@ import { Redirect } from 'react-router'
 // import Spinner from 'react-bootstrap/Spinner'
 // import Alert from 'react-bootstrap/Alert'
 import RecipeForm from './RecipeForm'
+// import { createRecipe } from '../RecipeAjax'
 
 class RecipeCreate extends Component {
-  constructor () {
-    super()
+  constructor (props) {
+    super(props)
 
     this.state = {
       recipe: {
         title: '',
-        ingredient: ''
+        ingredient: '',
+        notes: ''
       },
+      user: props.user,
       created: false,
       message: null
     }
@@ -31,14 +34,15 @@ class RecipeCreate extends Component {
 
   handleSubmit = event => {
     event.preventDefault()
-    // const id = this.state.movie.id
     const { recipe } = this.state
 
     axios({
       url: `${apiUrl}/recipes`,
       method: 'post',
+      headers: { 'Authorization': `Token token=${this.state.user.token}` },
       data: { recipe: this.state.recipe }
     })
+    // createRecipe(this.props.user)
       .then(response => this.setState({
         created: true,
         recipe: response.data.recipe
@@ -58,11 +62,12 @@ class RecipeCreate extends Component {
       }}/>
     }
 
-    const { title, ingredient } = recipe
+    const { title, ingredient, notes } = recipe
     return (
       <RecipeForm
         title={title}
         ingredient={ingredient}
+        notes={notes}
         message={message}
         handleChange={this.handleChange}
         handleSubmit={this.handleSubmit}

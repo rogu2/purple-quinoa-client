@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
-import axios from 'axios'
-import apiUrl from '../../apiConfig'
+import { getRecipes, deleteRecipe } from '../RecipeAjax'
+// import axios from 'axios'
+// import apiUrl from '../../apiConfig'
 import { Redirect } from 'react-router'
 import Spinner from 'react-bootstrap/Spinner'
 import { Link } from 'react-router-dom'
@@ -10,33 +11,39 @@ class Recipe extends Component {
     super()
 
     this.state = {
-      movie: null,
+      recipe: null,
       shouldRedirect: false
     }
   }
 
   componentDidMount () {
-    const id = this.props.match.params.id
-    axios.get(`${apiUrl}/recipes/${id}`)
-      .then(response => this.setState({
-        recipe: response.data.recipe
-      }))
-      .catch(console.log)
+    console.log('recipes component mounted')
+    let recipeData
+    getRecipes(this.props.user)
+      .then(response => {
+        recipeData = response.data.recipes
+        this.setState({
+          recipes: recipeData
+        })
+      })
+      .catch(console.error)
   }
 
   handleDelete = () => {
-    const id = this.props.match.params.id
-    axios.delete(`${apiUrl}/recipes/${id}`)
+    // const id = this.props.match.params.id
+    deleteRecipe()
       .then(() => this.setState({ shouldRedirect: true }))
       .catch(console.error)
   }
 
   render () {
-    if (!this.state.recipe) {
+    const { recipe } = this.state
+
+    if (!recipe) {
       return <Spinner animation="border" />
     }
 
-    if (this.state.shouldRedirect) {
+    if (recipe.shouldRedirect) {
       return <Redirect to={{
         pathname: '/recipes', state: { message: 'Successfully deleted recipe!' }
       }}/>
