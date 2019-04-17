@@ -58,7 +58,7 @@ class RecipeCreate extends Component {
 
     if (created) {
       return <Redirect to={{
-        pathname: `/recipes/${this.state.recipe.id}`, state: { message: 'Successfully created recipe!' }
+        pathname: '/recipes', state: { message: 'Successfully created recipe!' }
       }}/>
     }
 
