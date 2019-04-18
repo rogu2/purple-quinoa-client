@@ -37,7 +37,7 @@ class App extends Component {
     // clears all alerts after 2 seconds
     setTimeout(() => {
       this.setState({ alerts: [] })
-    }, 2000)
+    }, 1000)
   }
 
   render () {
@@ -74,8 +74,13 @@ class App extends Component {
             <RecipeCreate alert={this.alert} user={user} />
           )} />
 
-          <AuthenticatedRoute exact path='/recipes/:id' component={Recipe} />
-          <AuthenticatedRoute exact path='/recipes/:id/edit' component={RecipeEdit} />
+          <AuthenticatedRoute user={user} exact path='/recipes/:id' render={({ match }) => (
+            <Recipe alert={this.alert} user={user} match={match} />
+          )} />
+
+          <AuthenticatedRoute user={user} exact path='/recipes/:id/edit' render={({ match }) => (
+            <RecipeEdit alert={this.alert} user={user} match={match} />
+          )} />
 
         </main>
       </Fragment>
@@ -84,10 +89,10 @@ class App extends Component {
 }
 
 export default App
+// <AuthenticatedRoute exact path='/recipes/:id' component={Recipe} />
+
+// <AuthenticatedRoute exact path='/recipes/:id/edit' component={RecipeEdit} />
 
 // <AuthenticatedRoute exact path='/recipes/:id' render={({ match }) => (
 //   <Recipe alert={this.alert} user={user} match={match} />
-// )} />
-// <AuthenticatedRoute exact path='/recipes/:id/edit' render={({ match }) => (
-//   <RecipeEdit alert={this.alert} user={user} match={match} />
 // )} />

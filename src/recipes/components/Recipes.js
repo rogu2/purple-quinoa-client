@@ -4,7 +4,7 @@ import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 // import Alert from 'react-bootstrap/Alert'
 import { getRecipes, deleteRecipe } from '../RecipeAjax'
-// import Spinner from 'react-bootstrap/Spinner'
+import Spinner from 'react-bootstrap/Spinner'
 
 class Recipes extends Component {
   constructor () {
@@ -20,68 +20,42 @@ class Recipes extends Component {
   }
 
   componentDidMount () {
-    console.log('recipes component mounted')
-    console.log('this.props currently is: ', this.props)
     const { user } = this.props
     getRecipes(user)
       .then(response => {
-        this.setState({ recipes: response.data.recipes },
-          console.log('after get recipes props======', this.state))
+        this.setState({ recipes: response.data.recipes })
       })
-      .catch(console.error)
+      .catch(() => {
+        this.props.alert('Failed to load page', 'danger')
+      })
   }
 
   handleDelete = () => {
     const { user, id } = this.props.match.params
     deleteRecipe(user, id)
       .then(() => this.setState({ shouldRedirect: true }))
-      .catch(console.error)
+      .catch(() => {
+        this.props.alert('Recipe successfully deleted', 'primary')
+      })
   }
 
   render () {
-    const { recipes } = this.state
-    console.log('after render, this state is currently: ', this.state)
+    const { recipes, recipe } = this.state
 
-    console.log('after render, this state recipes is currently: ', this.state.recipes)
-
-    console.log('after render, this state recipe is currently: ', this.state.recipe)
-
-    // const { title, notes, ingredient } = this.recipes
-    // console.log(title, notes, ingredient)
-
-    // if (this.state.recipes.length === 0) {
-    //   return <Spinner animation="border" />
-    // }
-    //
-    // if (recipes.length === null) {
-    //   return <p>{recipes.length === 0 ? <Alert variant="warning">{'No recipes to display'}</Alert> : ''}</p>
-    // }
-    console.log('recipes component render')
-    return (
-      <Fragment>
-        <h4> Recipes: </h4>
-        {recipes.map(recipe => (
-          <ul key={recipe._id}>
-            <li>
-              <Link to={'/recipes/' + recipe._id}>{recipe.title}</Link>
-            </li>
-            <li>ingredient: {recipes.ingredient}</li>
-            <li>notes: {recipes.notes}</li>
-            <li><button onClick={this.handleDelete}>DELETE</button></li>
-            <li><button>EDIT</button></li>
-          </ul>
-        ))}
-      </Fragment>
-    )
+    if (recipe === null) {
+      return <Spinner animation="border" />
+    } else {
+      return (
+        <Fragment>
+          <h4> Recipes: </h4>
+          {recipes.map(recipe => (
+            <ul key={recipe._id}>
+              <li><Link to={'/recipes/' + recipe._id}>{recipe.title}</Link></li>
+            </ul>
+          ))}
+        </Fragment>
+      )
+    }
   }
 }
-
 export default Recipes
-
-// <h4>Recipes: </h4>
-// <h5>{this.props.location.state ? this.props.location.state.message : ''}</h5>
-// <ul>
-//   {this.state.recipe.map(recipe => (
-
-//   ))}
-// </ul>

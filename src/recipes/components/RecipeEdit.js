@@ -15,6 +15,7 @@ class RecipeEdit extends Component {
       recipe: {
         title: '',
         ingredient: '',
+        notes: '',
         id: this.props.match.params.id
       },
       shouldRedirect: false,
@@ -24,8 +25,13 @@ class RecipeEdit extends Component {
   }
 
   componentDidMount () {
-    const id = this.props.match.params.id
-    axios.get(`${apiUrl}/recipes/${id}`)
+    const { id } = this.props.match.params
+    axios({
+      url: apiUrl + '/recipes/' + id,
+      method: 'GET',
+      headers: { 'Authorization': `Token token=${this.props.user.token}` },
+      data: { recipe: this.state.recipe }
+    })
       .then(response => this.setState({
         recipe: response.data.recipe
       }))
@@ -33,9 +39,6 @@ class RecipeEdit extends Component {
   }
 
   handleChange = event => {
-    // console.log('event target is', event.target.name, event.target.value)
-    console.log('this state recipe', this.state.recipe)
-
     this.setState({ recipe: {
       ...this.state.recipe, [event.target.name]: event.target.value
     } })
@@ -43,12 +46,25 @@ class RecipeEdit extends Component {
 
   handleSubmit = event => {
     event.preventDefault()
-    const id = this.state.recipe.id
+    const { id } = this.props.match.params
+    const { user } = this.props
     const { recipe } = this.state
 
-    axios.patch(`${apiUrl}/recipes/${id}`, { recipe: this.state.recipe })
+    axios({
+      url: apiUrl + '/recipes/' + id,
+      method: 'PATCH',
+      headers: { 'Authorization': `Token token=${user.token}` },
+      data: {
+        recipe: {
+          title: recipe.title,
+          ingredient: recipe.ingredient,
+          notes: recipe.notes
+        }
+      }
+    })
+    // axios.patch(`${apiUrl}/recipes/${id}`, { recipe: this.state.recipe })
       .then(() => this.setState({ updated: true }))
-      .catch(() => this.sestState({
+      .catch(() => this.setState({
         recipe: { ...recipe, title: '', ingredient: '' },
         message: 'Update failed. Please try again.'
       }))
@@ -63,15 +79,16 @@ class RecipeEdit extends Component {
 
     if (updated) {
       return <Redirect to={{
-        pathname: `/recipes/${recipe.id}`, state: { message: 'Successfully updated recipe!' }
+        pathname: '/recipes', state: { message: 'Successfully updated recipe!' }
       }}/>
     }
 
-    const { title, ingredient } = this.state.recipe
+    const { title, ingredient, notes } = this.state.recipe
     return (
       <RecipeForm
         title={title}
         ingredient={ingredient}
+        notes={notes}
         message={message}
         handleChange={this.handleChange}
         handleSubmit={this.handleSubmit}

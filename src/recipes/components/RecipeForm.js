@@ -12,8 +12,8 @@ const RecipeForm = ({ message, title, ingredient, notes, handleChange, handleSub
       <label htmlFor="ingredient">Ingredient</label>
       <input placeholder={ingredient} value={ingredient} name="ingredient" onChange={handleChange} />
 
-      <label htmlFor="ingredient">Notes</label>
-      <input placeholder={ingredient} value={notes} name="notes" onChange={handleChange} />
+      <label htmlFor="notes">Notes</label>
+      <input placeholder={notes} value={notes} name="notes" type="text" onChange={handleChange} />
 
       <button type="submit">Submit</button>
     </form>

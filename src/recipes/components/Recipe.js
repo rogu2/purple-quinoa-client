@@ -1,51 +1,54 @@
 import React, { Component, Fragment } from 'react'
-import { getRecipe, deleteRecipe } from '../RecipeAjax'
-// import axios from 'axios'
-// import apiUrl from '../../apiConfig'
+// import { deleteRecipe } from '../RecipeAjax'
+import axios from 'axios'
+import apiUrl from '../../apiConfig'
 import { Redirect } from 'react-router'
 import Spinner from 'react-bootstrap/Spinner'
 import { Link } from 'react-router-dom'
 
 class Recipe extends Component {
-  constructor () {
-    super()
+  constructor (props) {
+    super(props)
 
     this.state = {
       recipe: null,
-      shouldRedirect: false
+      shouldRedirect: false,
+      user: this.props.user
     }
   }
 
   componentDidMount () {
-    console.log('recipe component mounted successfully')
-    // axios({
-    //   url: apiUrl + '/recipes/' + id,
-    //   method: 'GET',
-    //   headers: { 'Authorization': `Token token=${user.token}` }
-    // })
-
-    getRecipe(this.props)
+    const { id } = this.props.match.params
+    const { user } = this.state
+    axios({
+      url: apiUrl + '/recipes/' + id,
+      method: 'GET',
+      headers: { 'Authorization': `Token token=${user.token}` }
+    })
       .then(response => this.setState({
         recipe: response.data.recipe
       }))
-      .catch(console.log)
+      .catch(() => {
+        this.props.alert('Something went wrong, please try again', 'danger')
+      })
   }
 
-  // componentDidMount () {
-  //   console.log('SHOW component successfully mounted')
-  //   const id = this.match.params._id
-  //   axios.get(`${apiUrl}/recipes/${id}`)
-  //     .then(response => this.setState({
-  //       recipe: response.data.recipe
-  //     }))
-  //     .catch(console.log)
-  // }
-
   handleDelete = () => {
-    // const id = this.props.match.params.id
-    deleteRecipe()
+    const { id } = this.props.match.params
+    const { user } = this.state
+
+    return axios({
+      url: apiUrl + '/recipes/' + id,
+      method: 'DELETE',
+      headers: { 'Authorization': `Token token=${user.token}` }
+    })
+      .then(() => {
+        this.props.alert('Delete in progress...', 'primary')
+      })
       .then(() => this.setState({ shouldRedirect: true }))
-      .catch(console.error)
+      .catch(() => {
+        this.props.alert('Recipe unsuccessfully deleted', 'danger')
+      })
   }
 
   render () {
@@ -55,14 +58,12 @@ class Recipe extends Component {
       return <Spinner animation="border" />
     }
 
-    if (recipe.shouldRedirect) {
+    if (this.state.shouldRedirect) {
       return <Redirect to={{
         pathname: '/recipes', state: { message: 'Successfully deleted recipe!' }
       }}/>
     }
 
-    const { title, ingredient } = this.state.recipe
-    console.log(title, ingredient)
     return (
       <Fragment>
         <h4>{this.state.recipe.title}</h4>

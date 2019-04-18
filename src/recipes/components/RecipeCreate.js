@@ -24,9 +24,6 @@ class RecipeCreate extends Component {
   }
 
   handleChange = event => {
-    // console.log('event target is', event.target.name, event.target.value)
-    console.log('this state recipe', this.state.recipe)
-
     this.setState({ recipe: {
       ...this.state.recipe, [event.target.name]: event.target.value
     } })
@@ -42,7 +39,6 @@ class RecipeCreate extends Component {
       headers: { 'Authorization': `Token token=${this.state.user.token}` },
       data: { recipe: this.state.recipe }
     })
-    // createRecipe(this.props.user)
       .then(response => this.setState({
         created: true,
         recipe: response.data.recipe
@@ -55,7 +51,6 @@ class RecipeCreate extends Component {
 
   render () {
     const { recipe, created, message } = this.state
-    console.log(created, message)
 
     if (created) {
       return <Redirect to={{
