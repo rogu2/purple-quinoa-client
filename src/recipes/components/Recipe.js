@@ -18,11 +18,8 @@ class Recipe extends Component {
   }
 
   componentDidMount () {
-    console.log('recipe component mounted successfully')
-    console.log('this is props after successfully mounting =========', this.props)
     const { id } = this.props.match.params
     const { user } = this.state
-    console.log(this.props)
     axios({
       url: apiUrl + '/recipes/' + id,
       method: 'GET',
@@ -31,23 +28,15 @@ class Recipe extends Component {
       .then(response => this.setState({
         recipe: response.data.recipe
       }))
-      .catch(console.log)
+      .catch(() => {
+        this.props.alert('Something went wrong, please try again', 'danger')
+      })
   }
-
-  // componentDidMount () {
-  //   console.log('SHOW component successfully mounted')
-  //   const id = this.match.params._id
-  //   axios.get(`${apiUrl}/recipes/${id}`)
-  //     .then(response => this.setState({
-  //       recipe: response.data.recipe
-  //     }))
-  //     .catch(console.log)
-  // }
 
   handleDelete = () => {
     const { id } = this.props.match.params
     const { user } = this.state
-    // const id = this.props.match.params.id
+
     return axios({
       url: apiUrl + '/recipes/' + id,
       method: 'DELETE',
@@ -64,7 +53,6 @@ class Recipe extends Component {
 
   render () {
     const { recipe } = this.state
-    console.log('THIS IS THE STATE!!!!', this.state)
 
     if (!recipe) {
       return <Spinner animation="border" />
@@ -76,8 +64,6 @@ class Recipe extends Component {
       }}/>
     }
 
-    const { title, ingredient } = this.state.recipe
-    console.log(title, ingredient)
     return (
       <Fragment>
         <h4>{this.state.recipe.title}</h4>

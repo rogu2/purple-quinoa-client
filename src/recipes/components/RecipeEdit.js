@@ -25,12 +25,7 @@ class RecipeEdit extends Component {
   }
 
   componentDidMount () {
-    console.log('recipe component mounted successfully')
-    console.log('this is props after successfully mounting =========', this.props)
     const { id } = this.props.match.params
-    // const { id } = this.state
-    // const { user } = this.props
-    console.log(this.props)
     axios({
       url: apiUrl + '/recipes/' + id,
       method: 'GET',
@@ -39,14 +34,11 @@ class RecipeEdit extends Component {
     })
       .then(response => this.setState({
         recipe: response.data.recipe
-      }, console.log('THIS IS THE UPDATE STATE', this.state)))
-      .catch(console.log)
+      }))
+      .catch(console.error)
   }
 
   handleChange = event => {
-    // console.log('event target is', event.target.name, event.target.value)
-    console.log('this state recipe', this.state.recipe)
-
     this.setState({ recipe: {
       ...this.state.recipe, [event.target.name]: event.target.value
     } })
@@ -55,9 +47,7 @@ class RecipeEdit extends Component {
   handleSubmit = event => {
     event.preventDefault()
     const { id } = this.props.match.params
-    // const id = this.state.recipe.id
     const { user } = this.props
-    // const id = this.state.recipe.id
     const { recipe } = this.state
 
     axios({
