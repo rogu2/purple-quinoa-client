@@ -4,7 +4,7 @@ import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 // import Alert from 'react-bootstrap/Alert'
 import { getRecipes, deleteRecipe } from '../RecipeAjax'
-// import Spinner from 'react-bootstrap/Spinner'
+import Spinner from 'react-bootstrap/Spinner'
 
 class Recipes extends Component {
   constructor () {
@@ -39,40 +39,65 @@ class Recipes extends Component {
   }
 
   render () {
-    const { recipes } = this.state
+    const { recipes, recipe } = this.state
     console.log('after render, this state is currently: ', this.state)
 
     console.log('after render, this state recipes is currently: ', this.state.recipes)
 
     console.log('after render, this state recipe is currently: ', this.state.recipe)
 
-    // const { title, notes, ingredient } = this.recipes
-    // console.log(title, notes, ingredient)
+    if (recipe === null) {
+      return <Spinner animation="border" />
+    } else {
+      const { title, notes, ingredient } = recipe
+      console.log(title, notes, ingredient)
+      return (
+        <Fragment>
+          <h4> Recipes: </h4>
+          {recipes.map(recipe => (
+            <ul key={recipe._id}>
+              <li>
+                <Link to={'/recipes/' + recipe._id}>{recipe.title}</Link>
+              </li>
+              {console.log('THIS IS THE RECIPE AFTER HITTING THE LINK', recipe._id)}
+              <li>ingredient: {recipes.ingredient}</li>
+              <li>notes: {recipes.notes}</li>
+              <li><button onClick={this.handleDelete}>DELETE</button></li>
+              <li><button>EDIT</button></li>
+            </ul>
+          ))}
+        </Fragment>
+      )
+    }
+
+    // data-id={recipe._id}
+    // event.currentTarget.dataset.id
 
     // if (this.state.recipes.length === 0) {
     //   return <Spinner animation="border" />
     // }
     //
-    // if (recipes.length === null) {
-    //   return <p>{recipes.length === 0 ? <Alert variant="warning">{'No recipes to display'}</Alert> : ''}</p>
-    // }
-    console.log('recipes component render')
-    return (
-      <Fragment>
-        <h4> Recipes: </h4>
-        {recipes.map(recipe => (
-          <ul key={recipe._id}>
-            <li>
-              <Link to={'/recipes/' + recipe._id}>{recipe.title}</Link>
-            </li>
-            <li>ingredient: {recipes.ingredient}</li>
-            <li>notes: {recipes.notes}</li>
-            <li><button onClick={this.handleDelete}>DELETE</button></li>
-            <li><button>EDIT</button></li>
-          </ul>
-        ))}
-      </Fragment>
-    )
+    // //
+    // // if (this.state.recipe === null) {
+    // //   return <p>{recipes.length === 0 ? <Alert variant="warning">{'No recipes to display'}</Alert> : ''}</p>
+    // // }
+    // console.log('recipes component render')
+    // return (
+    //   <Fragment>
+    //     <h4> Recipes: </h4>
+    //     {recipes.map(recipe => (
+    //       <ul key={recipe._id}>
+    //         <li>
+    //           <Link to={'/recipes/' + recipe._id}>{recipe.title}</Link>
+    //         </li>{console.log('THIS IS THE RECIPE AFTER HITTING THE LINK', recipe._id)}
+    //         <li>ingredient: {recipes.ingredient}</li>
+    //         <li>notes: {recipes.notes}</li>
+    //         <li><button onClick={this.handleDelete}>DELETE</button></li>
+    //         <li><button>EDIT</button></li>
+    //       </ul>
+    //     ))}
+    //   </Fragment>
+    // )
   }
 }
 

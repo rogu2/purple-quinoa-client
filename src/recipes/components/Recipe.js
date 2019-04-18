@@ -1,30 +1,33 @@
 import React, { Component, Fragment } from 'react'
-import { getRecipe, deleteRecipe } from '../RecipeAjax'
-// import axios from 'axios'
-// import apiUrl from '../../apiConfig'
+import { deleteRecipe } from '../RecipeAjax'
+import axios from 'axios'
+import apiUrl from '../../apiConfig'
 import { Redirect } from 'react-router'
 import Spinner from 'react-bootstrap/Spinner'
 import { Link } from 'react-router-dom'
 
 class Recipe extends Component {
-  constructor () {
-    super()
+  constructor (props) {
+    super(props)
 
     this.state = {
       recipe: null,
-      shouldRedirect: false
+      shouldRedirect: false,
+      user: this.props.user
     }
   }
 
   componentDidMount () {
     console.log('recipe component mounted successfully')
-    // axios({
-    //   url: apiUrl + '/recipes/' + id,
-    //   method: 'GET',
-    //   headers: { 'Authorization': `Token token=${user.token}` }
-    // })
-
-    getRecipe(this.props)
+    console.log('this is props after successfully mounting =========', this.props)
+    const { id } = this.props.match.params
+    const { user } = this.state
+    console.log(this.props)
+    axios({
+      url: apiUrl + '/recipes/' + id,
+      method: 'GET',
+      headers: { 'Authorization': `Token token=${user.token}` }
+    })
       .then(response => this.setState({
         recipe: response.data.recipe
       }))
