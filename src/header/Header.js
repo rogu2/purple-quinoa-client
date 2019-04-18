@@ -1,15 +1,15 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 
 import './Header.scss'
 
 const authenticatedOptions = (
-  <React.Fragment>
+  <Fragment>
     <NavLink to="/recipes" exact activeClassName="active-route">My Recipes</NavLink>
-    <NavLink to="/recipe-create" exact activeClassName="active-route">Add a recipe!</NavLink>
+    <NavLink to="/recipes-create" exact activeClassName="active-route">Add a recipe!</NavLink>
     <Link to="/change-password">Change Password</Link>
     <Link to="/sign-out">Sign Out</Link>
-  </React.Fragment>
+  </Fragment>
 )
 
 const unauthenticatedOptions = (

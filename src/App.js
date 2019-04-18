@@ -30,7 +30,14 @@ class App extends Component {
   clearUser = () => this.setState({ user: null })
 
   alert = (message, type) => {
-    this.setState({ alerts: [...this.state.alerts, { message, type }] })
+    const { alerts } = this.state
+
+    this.setState({ alerts: [...alerts, { message, type }] })
+
+    // clears all alerts after 2 seconds
+    setTimeout(() => {
+      this.setState({ alerts: [] })
+    }, 2000)
   }
 
   render () {
@@ -66,12 +73,9 @@ class App extends Component {
           <AuthenticatedRoute user={user} exact path='/recipes-create' render={() => (
             <RecipeCreate alert={this.alert} user={user} />
           )} />
-          <AuthenticatedRoute user={user} exact path='/recipes/:id' render={({ match }) => (
-            <Recipe alert={this.alert} match={match} user={user} />
-          )} />
-          <AuthenticatedRoute user={user} exact path='/recipes/:id/edit' render={({ match }) => (
-            <RecipeEdit alert={this.alert} match={match} user={user} />
-          )} />
+
+          <AuthenticatedRoute exact path='/recipes/:id' component={Recipe} />
+          <AuthenticatedRoute exact path='/recipes/:id/edit' component={RecipeEdit} />
 
         </main>
       </Fragment>
@@ -81,7 +85,9 @@ class App extends Component {
 
 export default App
 
-// <Route exact path="/recipes" component={Recipes} />
-// <Route exact path="/recipes/:id" component={Recipe} />
-// <Route exact path="/recipes/:id/edit" component={RecipeEdit} />
-// <Route exact path="/recipe-create" component={RecipeCreate} />
+// <AuthenticatedRoute exact path='/recipes/:id' render={({ match }) => (
+//   <Recipe alert={this.alert} user={user} match={match} />
+// )} />
+// <AuthenticatedRoute exact path='/recipes/:id/edit' render={({ match }) => (
+//   <RecipeEdit alert={this.alert} user={user} match={match} />
+// )} />

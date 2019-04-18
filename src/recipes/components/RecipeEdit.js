@@ -63,7 +63,7 @@ class RecipeEdit extends Component {
 
     if (updated) {
       return <Redirect to={{
-        pathname: `/recipes/${this.state.recipe.id}`, state: { message: 'Successfully updated recipe!' }
+        pathname: `/recipes/${recipe.id}`, state: { message: 'Successfully updated recipe!' }
       }}/>
     }
 
