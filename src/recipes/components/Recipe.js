@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { getRecipes, deleteRecipe } from '../RecipeAjax'
+import { getRecipe, deleteRecipe } from '../RecipeAjax'
 // import axios from 'axios'
 // import apiUrl from '../../apiConfig'
 import { Redirect } from 'react-router'
@@ -17,17 +17,29 @@ class Recipe extends Component {
   }
 
   componentDidMount () {
-    console.log('recipes component mounted')
-    let recipeData
-    getRecipes(this.props.user)
-      .then(response => {
-        recipeData = response.data.recipes
-        this.setState({
-          recipes: recipeData
-        })
-      })
-      .catch(console.error)
+    console.log('recipe component mounted successfully')
+    // axios({
+    //   url: apiUrl + '/recipes/' + id,
+    //   method: 'GET',
+    //   headers: { 'Authorization': `Token token=${user.token}` }
+    // })
+
+    getRecipe(this.props)
+      .then(response => this.setState({
+        recipe: response.data.recipe
+      }))
+      .catch(console.log)
   }
+
+  // componentDidMount () {
+  //   console.log('SHOW component successfully mounted')
+  //   const id = this.match.params._id
+  //   axios.get(`${apiUrl}/recipes/${id}`)
+  //     .then(response => this.setState({
+  //       recipe: response.data.recipe
+  //     }))
+  //     .catch(console.log)
+  // }
 
   handleDelete = () => {
     // const id = this.props.match.params.id
@@ -50,10 +62,11 @@ class Recipe extends Component {
     }
 
     const { title, ingredient } = this.state.recipe
+    console.log(title, ingredient)
     return (
       <Fragment>
-        <h4>{title}</h4>
-        <p>Ingredients: {ingredient}</p>
+        <h4>{this.state.recipe.title}</h4>
+        <p>Ingredients: {this.state.recipe.ingredient}</p>
         <button onClick={this.handleDelete}>DELETE</button>
         <Link to={this.props.match.url + '/edit'}>
           <button>EDIT</button>

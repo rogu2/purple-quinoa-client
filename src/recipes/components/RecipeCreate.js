@@ -55,6 +55,7 @@ class RecipeCreate extends Component {
 
   render () {
     const { recipe, created, message } = this.state
+    console.log(created, message)
 
     if (created) {
       return <Redirect to={{

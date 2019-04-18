@@ -73,12 +73,9 @@ class App extends Component {
           <AuthenticatedRoute user={user} exact path='/recipes-create' render={() => (
             <RecipeCreate alert={this.alert} user={user} />
           )} />
-          <AuthenticatedRoute user={user} exact path='/recipes/:id' render={({ match }) => (
-            <Recipe alert={this.alert} match={match} user={user} />
-          )} />
-          <AuthenticatedRoute user={user} exact path='/recipes/:id/edit' render={({ match }) => (
-            <RecipeEdit alert={this.alert} match={match} user={user} />
-          )} />
+
+          <AuthenticatedRoute exact path='/recipes/:id' component={Recipe} />
+          <AuthenticatedRoute exact path='/recipes/:id/edit' component={RecipeEdit} />
 
         </main>
       </Fragment>
@@ -87,3 +84,10 @@ class App extends Component {
 }
 
 export default App
+
+// <AuthenticatedRoute exact path='/recipes/:id' render={({ match }) => (
+//   <Recipe alert={this.alert} user={user} match={match} />
+// )} />
+// <AuthenticatedRoute exact path='/recipes/:id/edit' render={({ match }) => (
+//   <RecipeEdit alert={this.alert} user={user} match={match} />
+// )} />

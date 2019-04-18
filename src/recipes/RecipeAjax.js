@@ -4,23 +4,24 @@ import apiUrl from '../apiConfig.js'
 
 export const getRecipes = (user) => {
   return axios({
-    url: `${apiUrl}/recipes`,
+    url: apiUrl + '/recipes',
     method: 'GET',
     headers: { 'Authorization': `Token token=${user.token}` }
   })
 }
 
-export const getRecipe = ({ user, match }) => {
+export const getRecipe = ({ id, user }) => {
+  id = parseInt(id)
   return axios({
-    url: `${apiUrl}/recipes/${match.params.id}`,
+    url: apiUrl + '/recipes/' + id,
     method: 'GET',
     headers: { 'Authorization': `Token token=${user.token}` }
   })
 }
 
-export const deleteRecipe = ({ user, match }) => {
+export const deleteRecipe = ({ user, id }) => {
   return axios({
-    url: `${apiUrl}/recipes/${match.params.id}`,
+    url: `${apiUrl}/recipes/${id}`,
     method: 'DELETE',
     headers: { 'Authorization': `Token token=${user.token}` }
   })
@@ -32,7 +33,7 @@ export const createRecipe = ({ props, recipeData }) => {
     method: 'POST',
     headers: { 'Authorization': `Token token=${props.user.token}` },
     data: {
-      recipe: {
+      recipes: {
         title: recipeData.title,
         ingredient: recipeData.ingredient,
         notes: recipeData.notes
@@ -47,7 +48,7 @@ export const editRecipe = ({ props, recipeData }) => {
     method: 'PATCH',
     headers: { 'Authorization': `Token token=${props.user.token}` },
     data: {
-      recipe: {
+      recipes: {
         title: recipeData.title,
         ingredient: recipeData.ingredient,
         notes: recipeData.notes

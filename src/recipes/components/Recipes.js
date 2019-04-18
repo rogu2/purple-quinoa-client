@@ -3,7 +3,7 @@ import React, { Component, Fragment } from 'react'
 // import apiUrl from '../../apiConfig'
 import { Link } from 'react-router-dom'
 // import Alert from 'react-bootstrap/Alert'
-import { getRecipes } from '../RecipeAjax'
+import { getRecipes, deleteRecipe } from '../RecipeAjax'
 // import Spinner from 'react-bootstrap/Spinner'
 
 class Recipes extends Component {
@@ -12,7 +12,7 @@ class Recipes extends Component {
 
     this.state = {
       recipes: [],
-      recipe: null,
+      recipe: [],
       title: null,
       notes: null,
       ingredient: null
@@ -21,13 +21,30 @@ class Recipes extends Component {
 
   componentDidMount () {
     console.log('recipes component mounted')
-    getRecipes(this.props.user)
-      .then(response => { this.setState({ recipes: response.data.recipe }) })
+    console.log('this.props currently is: ', this.props)
+    const { user } = this.props
+    getRecipes(user)
+      .then(response => {
+        this.setState({ recipes: response.data.recipes },
+          console.log('after get recipes props======', this.state))
+      })
+      .catch(console.error)
+  }
+
+  handleDelete = () => {
+    const { user, id } = this.props.match.params
+    deleteRecipe(user, id)
+      .then(() => this.setState({ shouldRedirect: true }))
       .catch(console.error)
   }
 
   render () {
     const { recipes } = this.state
+    console.log('after render, this state is currently: ', this.state)
+
+    console.log('after render, this state recipes is currently: ', this.state.recipes)
+
+    console.log('after render, this state recipe is currently: ', this.state.recipe)
 
     // const { title, notes, ingredient } = this.recipes
     // console.log(title, notes, ingredient)
@@ -43,13 +60,15 @@ class Recipes extends Component {
     return (
       <Fragment>
         <h4> Recipes: </h4>
-        {recipes.map(recipes => (
-          <ul key={recipes._id}>
+        {recipes.map(recipe => (
+          <ul key={recipe._id}>
             <li>
-              <Link to={'/recipes/' + recipes._id}>{recipes.title}</Link>
+              <Link to={'/recipes/' + recipe._id}>{recipe.title}</Link>
             </li>
             <li>ingredient: {recipes.ingredient}</li>
             <li>notes: {recipes.notes}</li>
+            <li><button onClick={this.handleDelete}>DELETE</button></li>
+            <li><button>EDIT</button></li>
           </ul>
         ))}
       </Fragment>
