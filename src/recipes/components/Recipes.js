@@ -62,8 +62,6 @@ class Recipes extends Component {
               {console.log('THIS IS THE RECIPE AFTER HITTING THE LINK', recipe._id)}
               <li>ingredient: {recipes.ingredient}</li>
               <li>notes: {recipes.notes}</li>
-              <li><button onClick={this.handleDelete}>DELETE</button></li>
-              <li><button>EDIT</button></li>
             </ul>
           ))}
         </Fragment>

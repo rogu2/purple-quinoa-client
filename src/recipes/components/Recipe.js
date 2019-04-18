@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { deleteRecipe } from '../RecipeAjax'
+// import { deleteRecipe } from '../RecipeAjax'
 import axios from 'axios'
 import apiUrl from '../../apiConfig'
 import { Redirect } from 'react-router'
@@ -45,20 +45,32 @@ class Recipe extends Component {
   // }
 
   handleDelete = () => {
+    const { id } = this.props.match.params
+    const { user } = this.state
     // const id = this.props.match.params.id
-    deleteRecipe()
+    return axios({
+      url: apiUrl + '/recipes/' + id,
+      method: 'DELETE',
+      headers: { 'Authorization': `Token token=${user.token}` }
+    })
+      .then(() => {
+        this.props.alert('Delete in progress...', 'primary')
+      })
       .then(() => this.setState({ shouldRedirect: true }))
-      .catch(console.error)
+      .catch(() => {
+        this.props.alert('Recipe unsuccessfully deleted', 'danger')
+      })
   }
 
   render () {
     const { recipe } = this.state
+    console.log('THIS IS THE STATE!!!!', this.state)
 
     if (!recipe) {
       return <Spinner animation="border" />
     }
 
-    if (recipe.shouldRedirect) {
+    if (this.state.shouldRedirect) {
       return <Redirect to={{
         pathname: '/recipes', state: { message: 'Successfully deleted recipe!' }
       }}/>
