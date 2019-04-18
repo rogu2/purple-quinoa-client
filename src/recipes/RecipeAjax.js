@@ -11,7 +11,6 @@ export const getRecipes = (user) => {
 }
 
 export const getRecipe = ({ id, user }) => {
-  id = parseInt(id)
   return axios({
     url: apiUrl + '/recipes/' + id,
     method: 'GET',

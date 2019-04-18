@@ -24,12 +24,22 @@ class RecipeEdit extends Component {
   }
 
   componentDidMount () {
-    const id = this.props.match.params.id
-    axios.get(`${apiUrl}/recipes/${id}`)
+    console.log('recipe component mounted successfully')
+    console.log('this is props after successfully mounting =========', this.props)
+    const { id } = this.props.match.params
+    // const { id } = this.state
+    // const { user } = this.props
+    console.log(this.props)
+    axios({
+      url: apiUrl + '/recipes/' + id,
+      method: 'GET',
+      headers: { 'Authorization': `Token token=${this.props.user.token}` },
+      data: { recipe: this.state.recipe }
+    })
       .then(response => this.setState({
         recipe: response.data.recipe
-      }))
-      .catch(console.error)
+      }, console.log('THIS IS THE UPDATE STATE', this.state)))
+      .catch(console.log)
   }
 
   handleChange = event => {
@@ -43,12 +53,27 @@ class RecipeEdit extends Component {
 
   handleSubmit = event => {
     event.preventDefault()
-    const id = this.state.recipe.id
+    const { id } = this.props.match.params
+    // const id = this.state.recipe.id
+    const { user } = this.props
+    // const id = this.state.recipe.id
     const { recipe } = this.state
 
-    axios.patch(`${apiUrl}/recipes/${id}`, { recipe: this.state.recipe })
+    axios({
+      url: apiUrl + '/recipes/' + id,
+      method: 'PATCH',
+      headers: { 'Authorization': `Token token=${user.token}` },
+      data: {
+        recipe: {
+          title: recipe.title,
+          ingredient: recipe.ingredient,
+          notes: recipe.notes
+        }
+      }
+    })
+    // axios.patch(`${apiUrl}/recipes/${id}`, { recipe: this.state.recipe })
       .then(() => this.setState({ updated: true }))
-      .catch(() => this.sestState({
+      .catch(() => this.setState({
         recipe: { ...recipe, title: '', ingredient: '' },
         message: 'Update failed. Please try again.'
       }))
@@ -63,15 +88,16 @@ class RecipeEdit extends Component {
 
     if (updated) {
       return <Redirect to={{
-        pathname: `/recipes/${recipe.id}`, state: { message: 'Successfully updated recipe!' }
+        pathname: '/recipes', state: { message: 'Successfully updated recipe!' }
       }}/>
     }
 
-    const { title, ingredient } = this.state.recipe
+    const { title, ingredient, notes } = this.state.recipe
     return (
       <RecipeForm
         title={title}
         ingredient={ingredient}
+        notes={notes}
         message={message}
         handleChange={this.handleChange}
         handleSubmit={this.handleSubmit}
