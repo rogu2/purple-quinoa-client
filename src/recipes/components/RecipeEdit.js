@@ -15,6 +15,7 @@ class RecipeEdit extends Component {
       recipe: {
         title: '',
         ingredient: '',
+        notes: '',
         id: this.props.match.params.id
       },
       shouldRedirect: false,
