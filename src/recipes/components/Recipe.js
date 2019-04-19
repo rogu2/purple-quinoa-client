@@ -68,10 +68,14 @@ class Recipe extends Component {
       <Fragment>
         <h4>{this.state.recipe.title}</h4>
         <p>Ingredients: {this.state.recipe.ingredient}</p>
-        <button onClick={this.handleDelete}>DELETE</button>
-        <Link to={this.props.match.url + '/edit'}>
-          <button>EDIT</button>
-        </Link>
+        {this.state.recipe.owner === this.props.user._id ? (
+          <Fragment>
+            <button onClick={this.handleDelete}>DELETE</button>
+            <Link to={this.props.match.url + '/edit'}>
+              <button>EDIT</button>
+            </Link>
+          </Fragment>
+        ) : ''}
       </Fragment>
     )
   }
