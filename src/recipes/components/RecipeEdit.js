@@ -83,12 +83,11 @@ class RecipeEdit extends Component {
       }}/>
     }
 
-    const { title, ingredient, notes } = this.state.recipe
+    const { title, ingredient } = this.state.recipe
     return (
       <RecipeForm
         title={title}
         ingredient={ingredient}
-        notes={notes}
         message={message}
         handleChange={this.handleChange}
         handleSubmit={this.handleSubmit}

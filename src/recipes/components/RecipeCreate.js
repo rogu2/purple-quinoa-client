@@ -58,12 +58,11 @@ class RecipeCreate extends Component {
       }}/>
     }
 
-    const { title, ingredient, notes } = recipe
+    const { title, ingredient } = recipe
     return (
       <RecipeForm
         title={title}
         ingredient={ingredient}
-        notes={notes}
         message={message}
         handleChange={this.handleChange}
         handleSubmit={this.handleSubmit}
