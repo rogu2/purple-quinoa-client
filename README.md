@@ -100,29 +100,6 @@
  Heroku: https://dashboard.heroku.com/apps/purple-quinoa-api
  Client URL: https://rogu2.github.io/purple-quinoa-client/
 
- ## API Routes (for reference)
- |-----------------------------------------------------------|
- | Verb   | URI Pattern              | Controller#Action     |
- |--------|--------------------------|-----------------------|
- | POST   | `/sign-up`               | `users#signup`        |
- | POST   | `/sign-in`               | `users#signin`        |
- | DELETE | `/sign-out`              | `users#signout`       |
- | PATCH  | `/change-password`       | `users#changepw`      |
- |--------|--------------------------|-----------------------|
- | GET    | `/recipes`               | `recipes#index`       |
- | GET    | `/recipes/:id`           | `recipes#show`        |
- | POST   | `/recipes`               | `recipes#create`      |
- | DELETE | `/recipes/:id`           | `recipes#destroy`     |
- | PATCH  | `/recipes/:id`           | `recipes#update`      |
- |--------|--------------------------|-----------------------|
- | Verb   | (Still in beta)          | (Still in beta)       |
- | GET    | `/ingredients`           | `ingredients#index`   |
- | GET    | `/ingredients/:id`       | `ingredients#show`    |
- | POST   | `/ingredients`           | `ingredients#create`  |
- | DELETE | `/ingredients/:id`       | `ingredients#destroy` |
- | PATCH  | `/ingredients/:id`       | `ingredients#update`  |
- |-----------------------------------------------------------|
-
  ## License
  All content is licensed under a CC­BY­NC­SA 4.0 license.
  All software code is licensed under GNU GPLv3. For commercial use or alternative licensing, please contact rguempel@gmail.com.
